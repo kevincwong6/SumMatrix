@@ -35,23 +35,16 @@ vector<vector<int>> SumMatrix(vector<vector<int>> orig) {
         res[i][0] = res[i - 1][0] + orig[i][0];
     }
 
-    // initialize col sum with the first row values with copy constructor
-    // it is used to hold the col sum up to previous row
-    vector<int> colSum(orig[0]);
-
     for (int rowIdx = 1; rowIdx < rowCnt; rowIdx++) // process each row starting from row idx 1
     {
         for (int colIdx = 1; colIdx < colCnt; colIdx++) // process each row starting from col idx 1
         {
-            // sum = curr row of previous col +
-            //       the col sum that has the total value up to previous row +
-            //       the curr col/row value from the orig matrix
-            int sum = res[rowIdx][colIdx - 1] + colSum[colIdx] + orig[rowIdx][colIdx];
-
-            // update col sum that will be used for next row
-            colSum[colIdx] = colSum[colIdx]+orig[rowIdx][colIdx];
-
-            res[rowIdx][colIdx] = sum; // update result matrix
+            // sum = curr row of previous col + prev row of curr col -
+            //       the overlap between (curr row of previous col) & (prev row of curr col) +
+            //       the curr col / row value from the orig matrix
+            res[rowIdx][colIdx] = res[rowIdx][colIdx - 1] + res[rowIdx-1][colIdx] -
+                                  res[rowIdx - 1][colIdx - 1] +
+                                  orig[rowIdx][colIdx];
         }
     }
    return res;
