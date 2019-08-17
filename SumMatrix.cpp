@@ -42,8 +42,8 @@ vector<vector<int>> SumMatrix(vector<vector<int>> orig) {
             // sum = curr row of previous col + prev row of curr col -
             //       the overlap between (curr row of previous col) & (prev row of curr col) +
             //       the curr col / row value from the orig matrix
-            res[rowIdx][colIdx] = res[rowIdx][colIdx - 1] + res[rowIdx-1][colIdx] -
-                                  res[rowIdx - 1][colIdx - 1] +
+            res[rowIdx][colIdx] = res[rowIdx][colIdx - 1] - res[rowIdx - 1][colIdx - 1] +
+                                  res[rowIdx - 1][colIdx] +
                                   orig[rowIdx][colIdx];
         }
     }
@@ -67,9 +67,6 @@ void UnitTestSumMatrix()
     testCaseSumMatrix(a);
 }
 
-int main()
-{
+int main(void) {
     UnitTestSumMatrix();
-
-    return 0;
 }
